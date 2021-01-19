@@ -3,25 +3,39 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.nio.CharBuffer;
 import java.util.Scanner;
 
 public class ClientFTP {
-    public static void main(String[] args) throws IOException {
+    private String urlServer;
 
-        Scanner sc = new Scanner(System.in);
-        Socket s = new Socket("ftp.ubuntu.com",21);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(s.getInputStream()));
-        PrintWriter printer = new PrintWriter(s.getOutputStream());
+    public ClientFTP(String urlServer){
+        this.urlServer = urlServer;
+    }
+
+    public void connectionToServer(BufferedReader reader, PrintWriter printer) throws IOException {
         System.out.println(reader.readLine());
-        printer.println("AUTH TLS");
-        printer.flush();
+        //TODO : username for connection or anonymous
+        printer.println("USER anonymous");
         System.out.println(reader.readLine());
+        //TODO : password or nothing.
+        printer.println("PASS ");
+        System.out.println(reader.readLine());
+    }
 
-        String line = sc.nextLine();
-        while(line!=""){
-            line = sc.nextLine();
+    //return la socket sur la quel nous allons recevoir les datas
+    public Socket passifMode(BufferedReader reader, PrintWriter printer) throws IOException {
+        printer.println("PASV ");
+        String pasv = reader.readLine();
+        System.out.println(pasv);
+        String[] array = pasv.substring(pasv.indexOf("("),pasv.indexOf(")")).split(",");
+        //(port_TCP = p1 * 256 + p2).
+        int port = Integer.parseInt(array[4])*256+ Integer.parseInt(array[5]);
+        return new Socket("ftp.free.fr",port);
+    }
 
-        }
+    public void listDirectory() {
 
     }
+
 }
