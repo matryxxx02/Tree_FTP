@@ -27,7 +27,6 @@ public class ClientFTP {
     public Socket passifMode(BufferedReader reader, PrintWriter printer) throws IOException {
         printer.println("PASV ");
         String pasv = reader.readLine();
-        System.out.println(pasv);
         String[] array = pasv.substring(pasv.indexOf("("),pasv.indexOf(")")).split(",");
         //(port_TCP = p1 * 256 + p2).
         int port = Integer.parseInt(array[4])*256+ Integer.parseInt(array[5]);

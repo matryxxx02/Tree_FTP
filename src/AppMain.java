@@ -22,23 +22,30 @@ public class AppMain {
 
         //Liste les repertoires
         printer.println("LIST -a ");
+        //System.out.println("LIST -a");
+        reader.readLine();
         reader.readLine();
         String files = dataReader.readLine();
         while(files!=null){
             String[] infoFiles = files.split(" ");
             String fileName = infoFiles[infoFiles.length-1];
-            System.out.println(files);
+            System.out.println(fileName);
             if(infoFiles[0].charAt(0)=='d'){
-                printer.println("CWD /.mirrors18");
+                printer.println("CWD /"+fileName);
+                //System.out.println("CWD /"+fileName);
                 String statusDirectory = reader.readLine();
-                System.out.println(statusDirectory);
+                //System.out.println(statusDirectory);
                 //TODO: verifier le code de retour pour savoir si on peut lister le fichier
-                if(Integer.parseInt(statusDirectory.split(" ")[0])==250 && infoFiles[infoFiles.length-1].equals(".") && infoFiles[infoFiles.length-1].equals("..")){
+                if(Integer.parseInt(statusDirectory.split(" ")[0])==250 && !infoFiles[infoFiles.length-1].equals(".") && !infoFiles[infoFiles.length-1].equals("..")){
                     Socket repertorySocket = client.passifMode(reader,printer);
                     BufferedReader repertoryReader = new BufferedReader(new InputStreamReader(repertorySocket.getInputStream()));
+                    printer.println("LIST -a ");
+                    //System.out.println("LIST -a");
+                    reader.readLine();
+                    reader.readLine();
                     String file = repertoryReader.readLine();
                     while(file!=null){
-                        System.out.println("    "+file);
+                        System.out.println("    "+file.split(" ")[file.split(" ").length-1]);
                         file = repertoryReader.readLine();
                     }
 
