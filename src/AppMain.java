@@ -8,7 +8,7 @@ import java.net.Socket;
 public class AppMain {
 
     public static void main(String[] args) throws IOException {
-        String urlServer = "ftp.free.fr";
+        String urlServer = "ftp.ubuntu.com";
         Socket commandSocket = new Socket(urlServer,21);
         BufferedReader reader = new BufferedReader(new InputStreamReader(commandSocket.getInputStream()));
         PrintWriter printer = new PrintWriter(commandSocket.getOutputStream(),true);

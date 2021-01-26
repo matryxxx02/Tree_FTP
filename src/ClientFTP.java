@@ -29,7 +29,7 @@ public class ClientFTP {
         String[] array = pasv.substring(pasv.indexOf("("),pasv.indexOf(")")).split(",");
         //(port_TCP = p1 * 256 + p2).
         int port = Integer.parseInt(array[4])*256+ Integer.parseInt(array[5]);
-        return new Socket("ftp.free.fr",port);
+        return new Socket(urlServer,port);
     }
 
     public void listDirectories(BufferedReader reader, PrintWriter printer) throws IOException {
@@ -44,12 +44,18 @@ public class ClientFTP {
         String files = dataReader.readLine();
         String temp = trait;
         trait+="--";
-        while(files!=null){
+        printer.println("CWD /cdimage");
+        System.out.println(reader.readLine());
+        printer.println("CWD /.trace");
+        System.out.println(reader.readLine());
+        /*while(files!=null){
             File f = new File(files);
             if(f.fileIsPrintable()) System.out.println(trait+" "+f.getFilename());
             if(f.fileIsDirectory()) {
                 printer.println("CWD /" + f.getFilename());
                 String statusDirectory = reader.readLine();
+                System.out.println("CWD /" + f.getFilename());
+                System.out.println(statusDirectory);
                 if(Integer.parseInt(statusDirectory.split(" ")[0])==250 && f.fileIsPrintable()){
                     //afficher l'interieur et appel recursif
                     this.listDirectories(reader, printer);
@@ -57,7 +63,7 @@ public class ClientFTP {
             }
             files=dataReader.readLine();
         }
-        trait = temp;
+        trait = temp;*/
     };
 
 }

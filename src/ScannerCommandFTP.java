@@ -14,7 +14,7 @@ public class ScannerCommandFTP {
      */
     public static void main(String[] args) throws IOException {
         Scanner sc = new Scanner(System.in);
-        Socket commandSocket = new Socket("ftp.free.fr",21);
+        Socket commandSocket = new Socket("ftp.ubuntu.com",21);
         BufferedReader reader = new BufferedReader(new InputStreamReader(commandSocket.getInputStream()));
         PrintWriter printer = new PrintWriter(commandSocket.getOutputStream(),true);
 
