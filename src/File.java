@@ -17,7 +17,7 @@ public class File {
     }
 
     public boolean fileIsDirectory() {
-        return type == 'd';
+        return type == 'd' && fileIsPrintable();
     }
 
     public boolean fileIsPrintable() {

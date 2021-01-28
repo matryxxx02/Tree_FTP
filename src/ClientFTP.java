@@ -7,6 +7,7 @@ import java.net.Socket;
 public class ClientFTP {
     private String urlServer;
     private String trait = "--";
+    private int niveau = 0;
 
     public ClientFTP(String urlServer){
         this.urlServer = urlServer;
@@ -32,6 +33,13 @@ public class ClientFTP {
         return new Socket(urlServer,port);
     }
 
+    public String currentDirectory(BufferedReader reader, PrintWriter printer) throws IOException {
+        printer.println("PWD");
+        String currentDir = reader.readLine().split(" ")[1].replace("\"","");
+        //System.out.println("currentDir: "+currentDir);
+        return currentDir.equals("/") ? "" : currentDir;
+    }
+
     public void listDirectories(BufferedReader reader, PrintWriter printer) throws IOException {
         Socket dataSocket = this.passifMode(reader,printer);
         BufferedReader dataReader = new BufferedReader(new InputStreamReader(dataSocket.getInputStream()));
@@ -44,18 +52,35 @@ public class ClientFTP {
         String files = dataReader.readLine();
         String temp = trait;
         trait+="--";
-        printer.println("CWD /cdimage");
+        //on se replace
+        String currentDir = this.currentDirectory(reader, printer);
+        //System.out.println("currentDir: "+currentDir);
+        niveau++;
+        /*printer.println("CWD /cdimage");
         System.out.println(reader.readLine());
-        printer.println("CWD /.trace");
-        System.out.println(reader.readLine());
-        /*while(files!=null){
+        printer.println("CWD "+this.currentDirectory(reader, printer)+"/bionic");
+        System.out.println(reader.readLine());*/
+
+        while(files!=null){
             File f = new File(files);
+            //on affiche le nom du fichier
             if(f.fileIsPrintable()) System.out.println(trait+" "+f.getFilename());
+            if(niveau==2){
+                niveau=0;
+                break;
+            }
             if(f.fileIsDirectory()) {
-                printer.println("CWD /" + f.getFilename());
+
+                //on essaye de rentrer dans le repertoire
+                String changeDir = "CWD "+currentDir+"/"+ f.getFilename();
+                //System.out.println(changeDir);
+                printer.println(changeDir);
+                //on verifie si on a reussi a rentrer dans le repertoire
                 String statusDirectory = reader.readLine();
-                System.out.println("CWD /" + f.getFilename());
-                System.out.println(statusDirectory);
+                //System.out.println(statusDirectory);
+
+                //System.out.println(reader.readLine());
+
                 if(Integer.parseInt(statusDirectory.split(" ")[0])==250 && f.fileIsPrintable()){
                     //afficher l'interieur et appel recursif
                     this.listDirectories(reader, printer);
@@ -63,7 +88,7 @@ public class ClientFTP {
             }
             files=dataReader.readLine();
         }
-        trait = temp;*/
+        trait = temp;
     };
 
 }
