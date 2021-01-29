@@ -56,21 +56,16 @@ public class ClientFTP {
         //│
         //└──
         String currentDir = this.currentDirectory(reader, printer);
-        //System.out.println("currentDir: "+currentDir);
         niveau++;
-        /*printer.println("CWD /cdimage");
-        System.out.println(reader.readLine());
-        printer.println("CWD "+this.currentDirectory(reader, printer)+"/bionic");
-        System.out.println(reader.readLine());*/
 
         while(files!=null){
             File f = new File(files);
             //on affiche le nom du fichier
             if(f.fileIsPrintable()) System.out.println(trait+"├── "+f.getFilename());
-            if(niveau==2){
+            /*if(niveau==2){
                 niveau=0;
                 break;
-            }
+            }*/
             if(f.fileIsDirectory()) {
 
                 //on essaye de rentrer dans le repertoire
@@ -79,9 +74,6 @@ public class ClientFTP {
                 printer.println(changeDir);
                 //on verifie si on a reussi a rentrer dans le repertoire
                 String statusDirectory = reader.readLine();
-                //System.out.println(statusDirectory);
-
-                //System.out.println(reader.readLine());
 
                 if(Integer.parseInt(statusDirectory.split(" ")[0])==250 && f.fileIsPrintable()){
                     //afficher l'interieur et appel recursif
