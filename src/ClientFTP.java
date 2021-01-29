@@ -27,16 +27,18 @@ public class ClientFTP {
     public Socket passifMode(BufferedReader reader, PrintWriter printer) throws IOException {
         printer.println("PASV ");
         String pasv = reader.readLine();
+//        System.out.println(pasv);
         String[] array = pasv.substring(pasv.indexOf("("),pasv.indexOf(")")).split(",");
         //(port_TCP = p1 * 256 + p2).
         int port = Integer.parseInt(array[4])*256+ Integer.parseInt(array[5]);
+//        System.out.println("port:"+port);
+
         return new Socket(urlServer,port);
     }
 
     public String currentDirectory(BufferedReader reader, PrintWriter printer) throws IOException {
         printer.println("PWD");
         String currentDir = reader.readLine().split(" ")[1].replace("\"","");
-        //System.out.println("currentDir: "+currentDir);
         return currentDir.equals("/") ? "" : currentDir;
     }
 
@@ -57,33 +59,31 @@ public class ClientFTP {
         //└──
         String currentDir = this.currentDirectory(reader, printer);
         niveau++;
-
+        System.out.println(niveau);
         while(files!=null){
             File f = new File(files);
             //on affiche le nom du fichier
             if(f.fileIsPrintable()) System.out.println(trait+"├── "+f.getFilename());
-            /*if(niveau==2){
-                niveau=0;
-                break;
-            }*/
+
             if(f.fileIsDirectory()) {
 
                 //on essaye de rentrer dans le repertoire
                 String changeDir = "CWD "+currentDir+"/"+ f.getFilename();
+                System.out.println(currentDir);
                 //System.out.println(changeDir);
                 printer.println(changeDir);
                 //on verifie si on a reussi a rentrer dans le repertoire
                 String statusDirectory = reader.readLine();
-
                 if(Integer.parseInt(statusDirectory.split(" ")[0])==250 && f.fileIsPrintable()){
                     //afficher l'interieur et appel recursif
                     trait+="│    ";
-                    this.listDirectories(reader, printer);
+                    if(niveau<3) this.listDirectories(reader, printer);
                 }
             }
             files=dataReader.readLine();
         }
         trait = temp;
+        dataSocket.close();
     };
 
 }
