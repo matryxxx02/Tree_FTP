@@ -6,7 +6,7 @@ import java.net.Socket;
 
 public class ClientFTP {
     private String urlServer;
-    private String trait = "--";
+    private String trait = "";
     private int niveau = 0;
 
     public ClientFTP(String urlServer){
@@ -45,14 +45,16 @@ public class ClientFTP {
         BufferedReader dataReader = new BufferedReader(new InputStreamReader(dataSocket.getInputStream()));
 
         //lister les fichiers
-        printer.println("LIST -a ");
+        printer.println("LIST ");
         //pour chaque fichier verifier si c'est un repertoire et si on peux l'ouvrir
         reader.readLine();
         reader.readLine();
         String files = dataReader.readLine();
         String temp = trait;
-        trait+="--";
         //on se replace
+        //├──
+        //│
+        //└──
         String currentDir = this.currentDirectory(reader, printer);
         //System.out.println("currentDir: "+currentDir);
         niveau++;
@@ -64,7 +66,7 @@ public class ClientFTP {
         while(files!=null){
             File f = new File(files);
             //on affiche le nom du fichier
-            if(f.fileIsPrintable()) System.out.println(trait+" "+f.getFilename());
+            if(f.fileIsPrintable()) System.out.println(trait+"├── "+f.getFilename());
             if(niveau==2){
                 niveau=0;
                 break;
@@ -83,6 +85,7 @@ public class ClientFTP {
 
                 if(Integer.parseInt(statusDirectory.split(" ")[0])==250 && f.fileIsPrintable()){
                     //afficher l'interieur et appel recursif
+                    trait+="│    ";
                     this.listDirectories(reader, printer);
                 }
             }
