@@ -10,7 +10,7 @@ Le listing du serveur se base sur la [commande](http://www.delafond.org/traducma
 Le logiciel peut etre appelé avec des paramètres, comme la profondeur a laquelle nous voulons lister les fichiers,
 du serveur ou l'affichage des fichiers cachés.
 
-*(Aperçu du resultat de treeFTP)*
+*(Aperçu du resultat de TreeFTP)*
 ```
 ├── cdimage
 │    ├── bionic
