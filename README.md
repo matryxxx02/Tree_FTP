@@ -64,7 +64,11 @@ Vous pouvez activer l'affichage des fichiers cachés avec l'option `-a` :
 ### Lister et expliquer la gestion d'erreur :
 
 Dans ce projet, il y a plusieurs Classe qui extends Exception.
-ConnectionException : permet de relever les erreurs durant la connection et l'authentification du serveur. 
+ConnectionException : permet de relever les erreurs durant la connection et l'authentification du serveur.
+UrlException : permet de verifier que l'url du serveur est bien passé en paramètre.
+
+Ensuite j'utilise un try/catch pour afficher une erreur lorsqu'il y a un probleme avec la connection de la socket (nom de domaine ou port incorrect).
+ 
 ### Code samples :
 
 On peut voir ici une partie du code de la fonction recursif listDirectories.
