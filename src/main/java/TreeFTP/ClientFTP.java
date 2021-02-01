@@ -5,11 +5,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.logging.Logger;
 
 /**
- * @author : Nicolas Fernandes
- *
+ * Cette Classe permet de communiquer avec un serveur FTP via son url et le port.
+ * Elle contient les methodes qui peuvent servir a communiquer avec le serveur.
+ * Ici l'objectif principal est de lister tous les repertoires et fichiers de ce serveur.
+ * @author : Nicolas Fernandes.
  */
 public class ClientFTP {
     private String urlServer;
@@ -29,7 +30,7 @@ public class ClientFTP {
     }
 
     /**
-     *
+     * Cette methode permet de se connecter au serveur FTP et de s'authentifier.
      * @throws IOException
      * @throws ConnectionException
      */
@@ -52,7 +53,7 @@ public class ClientFTP {
     }
 
     /**
-     *
+     * Cette methode permet de relever le type d'exception qu'on peut rencontrer à l'authentification.
      * @param s
      * @throws ConnectionException
      */
@@ -69,8 +70,11 @@ public class ClientFTP {
     }
 
     /**
-     *
-     * @return
+     * Cette methode permet de passer le serveur FTP en mode passif.
+     * Le client reçoit une chaine de caractère (91,189,88,142,156,101), ces caractère correspont a l'url et
+     * le port du socket de donnée. C'est via cette socket que nous recevons les données.
+     * Voici la forme de l'url et le port url = ip_a.ip_b.ip_c.ip_d, port = ip_e*256+ip_f.
+     * @return la socket connecté a l'url et au port obtenu.
      * @throws IOException
      */
     //return la socket sur la quel nous allons recevoir les datas
@@ -78,14 +82,14 @@ public class ClientFTP {
         printer.println("PASV ");
         String pasv = reader.readLine();
         String[] array = pasv.substring(pasv.indexOf("(")+1,pasv.indexOf(")")).split(",");
-        //(port_TCP = p1 * 256 + p2).(91,189,88,142,156,101)
         int port = Integer.parseInt(array[4])*256+ Integer.parseInt(array[5]);
         String urlData = array[0]+"."+array[1]+"."+array[2]+"."+array[3];
         return new Socket(urlData,port);
     }
 
     /**
-     *
+     * @return Cette methode retourne le chemin du repertoire sur lequel on se trouve grâce à la commande FTP 'PWD'
+     * @throws IOException
      */
     public String currentDirectory() throws IOException {
         printer.println("PWD");
@@ -94,17 +98,25 @@ public class ClientFTP {
     }
 
     /**
-     *
+     * Cette methode permet de changer de repertoire, grâce à la commande FTP 'CWD'.
+     * @param dirname Elle prend en parametre le nom du repertoire
+     * @param currentDir et le repertoire courant.
+     * @return elle retourne true ou false en fonction du code obtenu (changement de repertoire reussi ou non).
+     * @throws IOException
      */
-    public int changeDirectory(String filename, String currentDir) throws IOException {
-        String changeDir = "CWD " + currentDir + "/" + filename;
+    public boolean changeDirectory(String dirname, String currentDir) throws IOException {
+        String changeDir = "CWD " + currentDir + "/" + dirname;
         printer.println(changeDir);
         String statusDirectory = reader.readLine();
-        return Integer.parseInt(statusDirectory.split(" ")[0]);
+        return Integer.parseInt(statusDirectory.split(" ")[0]) == 250;
     }
 
     /**
-     *
+     * Cette methode permet de d'afficher l'arborescence du serveur sur lequel le client FTP est connecté.
+     * C'est une methode recursif, lorsque le fichier est un repertoire elle s'appel recursivement.
+     * @param depth Elle prend en parametre un entier qui est la profondeur de l'arborescence
+     * @param hideFile et un boolean qui permet d'activer l'affichage des fichiers cachés.
+     * @throws IOException
      */
     public void listDirectories(int depth, boolean hideFile) throws IOException {
         Socket dataSocket = this.passifMode();
@@ -131,8 +143,7 @@ public class ClientFTP {
                 System.out.println(trait + "├── " + f.getFilename());
 
             if (f.fileIsDirectory()) {
-                int cwdResult = this.changeDirectory(f.getFilename(), currentDir);
-                if (cwdResult == 250 && f.fileIsPrintable()) {
+                if (this.changeDirectory(f.getFilename(), currentDir) && f.fileIsPrintable()) {
                     trait += "│    ";
                     if (depth != 0) this.listDirectories(depth - 1, hideFile);
                     trait = trait.substring(0,trait.length()-5);

@@ -1,8 +1,8 @@
 package TreeFTP;
 
 /**
- * @author : Nicolas Fernandes
- *
+ * Cette Classe permet de modéliser les fichiers obtenu par la commande FTP 'LIST'.
+ * @author : Nicolas Fernandes.
  */
 public class FileFTP {
     private String filename;
@@ -25,7 +25,7 @@ public class FileFTP {
     }
 
     /**
-     *
+     * @return true ou false si le fichier est un repertoire et si ce n'est pas l'un des deux repertoire : (. ou ..)
      */
     public boolean fileIsDirectory() {
         return type == 'd' && fileIsPrintable();
@@ -33,6 +33,7 @@ public class FileFTP {
 
     /**
      *
+     * @return true ou false si le fichier n'est pas l'un des deux repertoire : (. ou ..)
      */
     public boolean fileIsPrintable() {
         return !filename.equals(".") && !filename.equals("..");
