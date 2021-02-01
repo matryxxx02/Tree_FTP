@@ -1,3 +1,5 @@
+package treeFTP;
+
 public class File {
     private String filename;
     private char type;

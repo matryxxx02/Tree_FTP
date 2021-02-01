@@ -1,3 +1,5 @@
+package treeFTP;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,10 +16,10 @@ public class ScannerCommandFTP {
      */
     public static void main(String[] args) throws IOException {
         Scanner sc = new Scanner(System.in);
-        Socket commandSocket = new Socket("ftp.ubuntu.com",21);
+        Socket commandSocket = new Socket("ftp.free.fr",21);
         BufferedReader reader = new BufferedReader(new InputStreamReader(commandSocket.getInputStream()));
         PrintWriter printer = new PrintWriter(commandSocket.getOutputStream(),true);
-
+        System.out.println(reader.readLine());
         while(true){
             String line = sc.nextLine();
             printer.println(line);
