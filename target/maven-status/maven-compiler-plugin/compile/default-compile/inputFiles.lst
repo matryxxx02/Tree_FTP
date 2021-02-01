@@ -1,4 +1,5 @@
-/Users/nicolasfernandes/Desktop/treeFTP/src/main/java/treeFTP/ClientFTP.java
-/Users/nicolasfernandes/Desktop/treeFTP/src/main/java/treeFTP/ScannerCommandFTP.java
-/Users/nicolasfernandes/Desktop/treeFTP/src/main/java/treeFTP/File.java
-/Users/nicolasfernandes/Desktop/treeFTP/src/main/java/treeFTP/Main.java
+/Users/nicolasfernandes/Desktop/treeFTP/src/main/java/TreeFTP/UrlException.java
+/Users/nicolasfernandes/Desktop/treeFTP/src/main/java/TreeFTP/ConnectionException.java
+/Users/nicolasfernandes/Desktop/treeFTP/src/main/java/TreeFTP/ClientFTP.java
+/Users/nicolasfernandes/Desktop/treeFTP/src/main/java/TreeFTP/FileFTP.java
+/Users/nicolasfernandes/Desktop/treeFTP/src/main/java/TreeFTP/Main.java

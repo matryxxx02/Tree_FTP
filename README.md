@@ -63,10 +63,38 @@ Vous pouvez activer l'affichage des fichiers cachés avec l'option `-a` :
 
 ### Lister et expliquer la gestion d'erreur :
 
-Dans ce projet, il y a plusieurs Classe qui extends Exception. 
-
+Dans ce projet, il y a plusieurs Classe qui extends Exception.
+ConnectionException : permet de relever les erreurs durant la connection et l'authentification du serveur. 
 ### Code samples :
 
-```
+On peut voir ici une partie du code de la fonction recursif listDirectories.
+Elle liste le repertoire courant et pour chaque fichier la classe file nous permet de savoir
+le type de fichier. Dans tous les cas le fichier est affiché mais si le fichier est un repertoire alors on rentre dans celui ci
+et on appelle listDirectory pour le lister. 
 
+```
+if (hideFile)
+    printer.println("LIST -a");
+else
+    printer.println("LIST ");
+
+[...]
+
+while (files != null) {
+    FileFTP f = new FileFTP(files);
+    files = dataReader.readLine();
+
+    if(f.fileIsPrintable() && files == null)
+        System.out.println(trait + "└── " + f.getFilename());
+    else if (f.fileIsPrintable())
+        System.out.println(trait + "├── " + f.getFilename());
+
+    if (f.fileIsDirectory()) {
+        if (this.changeDirectory(f.getFilename(), currentDir) && f.fileIsPrintable()) {
+            trait += "│    ";
+            if (depth != 0) this.listDirectories(depth - 1, hideFile);
+            trait = trait.substring(0,trait.length()-5);
+        }
+    }
+}
 ```
