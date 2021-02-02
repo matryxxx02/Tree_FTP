@@ -59,16 +59,31 @@ Vous pouvez activer l'affichage des fichiers cachés avec l'option `-a` :
 
 ### Architecture :
 
-![Voici l'UML du projet :](./src/main/resources/TreeFTP_UML.png)
+Voici l'UML du projet : ![UML](./src/main/resources/TreeFTP_UML.png)
+
+L'implementation du pattern builder permet de creer une instance de ClientFTP plus facilement.
+Grâce à la classe ClientFTPBuilder, il est possible d'instancier un ClientFTP comme tel :
+```
+    ClientFTPBuilder builder = new ClientFTPBuilder("monURLServeur").build();
+```
+On peut facilement rajouter des options à l'instanciation comme le login, le mot de passe et le port :
+```
+    ClientFTPBuilder builder = new ClientFTPBuilder("monURLServeur")
+                                        .login("toto")
+                                        .password("secret")
+                                        .port(25465)
+                                        .build();
+```
 
 ### Lister et expliquer la gestion d'erreur :
 
-Dans ce projet, il y a plusieurs Classe qui extends Exception.
-ConnectionException : permet de relever les erreurs durant la connection et l'authentification du serveur.
-UrlException : permet de verifier que l'url du serveur est bien passé en paramètre.
+Dans ce projet, il y a plusieurs Classe qui extends Exception. <br>
+ConnectionException : permet de relever les erreurs durant la connection et l'authentification du serveur. <br>
+UrlException : permet de verifier que l'url du serveur est bien passé en paramètre. <br>
 
-Ensuite j'utilise un try/catch pour afficher une erreur lorsqu'il y a un probleme avec la connection de la socket (nom de domaine ou port incorrect).
- 
+Il y a un try/catch pour afficher une erreur lorsqu'il y a un probleme avec la connection de la socket (nom de domaine ou port incorrect).
+
+
 ### Code samples :
 
 On peut voir ici une partie du code de la fonction recursif listDirectories.
