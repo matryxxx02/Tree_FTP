@@ -2,7 +2,7 @@
 
 **Auteur** : Nicolas Fernandes, nicolas.fernandes.etu@univ-lille.fr <br>
 01/02/21 <br>
-[lien vidéo]()
+[lien vidéo](./src/main/resources/video_treeFTP.mp4)
 
 ### Presentation du projet : 
 

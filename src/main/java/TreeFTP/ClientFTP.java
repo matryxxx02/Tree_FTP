@@ -21,12 +21,16 @@ public class ClientFTP {
     private BufferedReader reader;
     private PrintWriter printer;
 
-    public ClientFTP(String urlServer, String login, String password){
-        this.urlServer = urlServer;
-        this.login = login;
-        this.password = password;
-        this.trait = "";
-        this.port = 21;
+    public String getUrlServer() {
+        return urlServer;
+    }
+
+    public ClientFTP(ClientFTPBuilder builder){
+        this.urlServer = builder.getUrlServer();
+        this.login = builder.getLogin();
+        this.password = builder.getPassword();
+        this.trait = builder.getTrait();
+        this.port = builder.getPort();
     }
 
     /**
@@ -81,10 +85,27 @@ public class ClientFTP {
     public Socket passifMode() throws IOException {
         printer.println("PASV ");
         String pasv = reader.readLine();
+        return new Socket(this.dataSocketURL(pasv),this.dataSocketPort(pasv));
+    }
+
+    /**
+     * Cette methode renvoi l'url a laquel le serveur nous demande de se connecter
+     * @param pasv le resultat de la commande FTP 'PASV'
+     * @return l'url du socket de donnée calculé avec pasv
+     */
+    public String dataSocketURL(String pasv) {
         String[] array = pasv.substring(pasv.indexOf("(")+1,pasv.indexOf(")")).split(",");
-        int port = Integer.parseInt(array[4])*256+ Integer.parseInt(array[5]);
-        String urlData = array[0]+"."+array[1]+"."+array[2]+"."+array[3];
-        return new Socket(urlData,port);
+        return array[0]+"."+array[1]+"."+array[2]+"."+array[3];
+    }
+
+    /**
+     * Cette methode renvoi le port sur lequel le serveur nous demande de se connecter
+     * @param pasv le resultat de la commande FTP 'PASV'
+     * @return le port du socket de donnée calculé avec pasv
+     */
+    public int dataSocketPort(String pasv) {
+        String[] array = pasv.substring(pasv.indexOf("(")+1,pasv.indexOf(")")).split(",");
+        return Integer.parseInt(array[4])*256+ Integer.parseInt(array[5]);
     }
 
     /**

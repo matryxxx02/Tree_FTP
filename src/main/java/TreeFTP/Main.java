@@ -1,10 +1,6 @@
 package TreeFTP;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,13 +30,16 @@ public class Main {
         }
 
         String urlServer = args[0];
-        if(urlServer.isEmpty())
-            throw new UrlException("L'url ne peux pas être vide");
 
-        String login = (args.length>2 && isNotParam(args[1])) ? args[1] : "anonymous";
-        String password = (args.length>3 && isNotParam(args[2])) ? args[2] : " ";
+        ClientFTPBuilder clientBuilder = new ClientFTPBuilder(urlServer);
 
-        ClientFTP client = new ClientFTP(urlServer, login, password);
+        if(args.length>2 && isNotParam(args[1]))
+            clientBuilder.login(args[1]);
+
+        if(args.length>3 && isNotParam(args[2]))
+            clientBuilder.password(args[2]);
+
+        ClientFTP client = clientBuilder.build();
         client.connectionToServer();
         client.listDirectories(depth, hideFile);
     }
