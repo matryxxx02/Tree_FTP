@@ -8,7 +8,7 @@
 
 **Tree FTP** est un programme codé en Java qui permet de lister le contenu d'un serveur FTP distant grâce au protocole [File Transfer Protocole](https://fr.wikipedia.org/wiki/File_Transfer_Protocol) (FTP). 
 Le listing du serveur se base sur la [commande](http://www.delafond.org/traducmanfr/man/man1/tree.1.html) `tree` a quelques détails prêt.
-Le logiciel peut etre appelé avec des paramètres, comme la profondeur a laquelle nous voulons lister les fichiers,
+Le logiciel peut être appelé avec des paramètres, comme la profondeur à laquelle nous voulons lister les fichiers,
 du serveur ou l'affichage des fichiers cachés.
 
 *(Aperçu du resultat de TreeFTP)*
