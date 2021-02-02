@@ -2,7 +2,9 @@
 
 **Auteur** : Nicolas Fernandes, nicolas.fernandes.etu@univ-lille.fr <br>
 01/02/21 <br>
-[lien vidéo](./src/main/resources/video_treeFTP.mp4)
+[lien vidéo](resources/video_treeFTP.mp4)
+
+Vous pouvez retrouver les differentes ressources dans le repertoire ressources et la documentation dans le repertoire docs.
 
 ### Presentation du projet : 
 
@@ -59,7 +61,7 @@ Vous pouvez activer l'affichage des fichiers cachés avec l'option `-a` :
 
 ### Architecture :
 
-Voici l'UML du projet : ![UML](./src/main/resources/TreeFTP_UML.png)
+Voici l'UML du projet : ![UML](resources/TreeFTP_UML.png)
 
 L'implementation du pattern builder permet de creer une instance de ClientFTP plus facilement.
 Grâce à la classe ClientFTPBuilder, il est possible d'instancier un ClientFTP comme tel :
